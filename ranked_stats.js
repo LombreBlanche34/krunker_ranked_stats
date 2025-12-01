@@ -9,12 +9,12 @@ window.fetch = function (...args) {
     let url = args[0];
 
     if (typeof url === 'string' && url.includes('api.krunker.io/match-history')) {
-        log('Krunker API request detected!');
+        console.log('Krunker API request detected!');
 
         // Modify limit=5 to limit=500
         if (url.includes('limit=5')) {
             args[0] = url.replace('limit=5', 'limit=500');
-            log('Limit modified from 5 to 500');
+            console.log('Limit modified from 5 to 500');
         }
 
         // Intercept response
@@ -22,7 +22,7 @@ window.fetch = function (...args) {
             const clonedResponse = response.clone();
 
             clonedResponse.json().then(data => {
-                log('Data received:', data);
+                console.log('Data received:', data);
                 matchData = data;
 
                 // Create charts once data is retrieved
@@ -50,7 +50,7 @@ function loadChartJS(callback) {
     script.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
     script.onload = callback;
     document.head.appendChild(script);
-    log('Loading Chart.js');
+    console.log('Loading Chart.js');
 }
 
 // ============================================
@@ -67,12 +67,12 @@ function addGlobalStyles() {
     styleElement.id = 'krunker-stats-global-styles';
     styleElement.textContent = `
         .content.svelte-mqcul7 {
-            overflow-y: clip !important; 
+            overflow-y: initial !important;
             min-height: auto !important;
         }
     `;
     document.head.appendChild(styleElement);
-    log('Global CSS styles added');
+    console.log('Global CSS styles added');
 }
 
 // ============================================
@@ -92,7 +92,7 @@ function createChartContainer() {
     const targetElement = document.querySelector("#genericPop > div > div.container.svelte-mqcul7 > div.content.svelte-mqcul7");
 
     if (!targetElement) {
-        log('Target element not found');
+        console.log('Target element not found');
         return null;
     }
 
@@ -163,7 +163,7 @@ function createChartContainer() {
         }
     });
 
-    log('Container created');
+    console.log('Container created');
 
     return container;
 }
@@ -214,7 +214,7 @@ function createCharts(data) {
         if (!container) return;
 
         const stats = extractPlayerData(data);
-        log('Statistics extracted:', stats);
+        console.log('Statistics extracted:', stats);
 
         const labels = stats.map((s, i) => `Match ${i + 1}`);
 
@@ -419,8 +419,8 @@ function createCharts(data) {
             }
         });
 
-        log('All charts have been created!');
+        console.log('All charts have been created!');
     });
 }
 
-log('Krunker statistics script loaded!');
+console.log(`[LombreScripts] [ranked_stats.js] Configuration loaded`);
